@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { RList } from "./RList.ts";
-import { lex } from "./lex.js";
+import { lex, Token } from "./lex.js";
 import fs from "fs";
 
 const filePath = "./src/test.txt";
@@ -42,28 +42,28 @@ test("测试读取文件", () => {
     if (char === null) break;
     str += char;
   }
-  expect(str).toBe("var content=4*5+1\nconst c=content^2");
+  expect(str).toBe("var content=4*5+1\nconst c=content^2\n");
   rlist.close();
 });
 
 test("测试语法分析器", () => {
   const tokens = lex("src/test.txt");
   expect(tokens).toEqual([
-    { type: "key", value: "var" },
-    { type: "name", value: "content" },
-    { type: "eq", value: "=" },
-    { type: "number", value: "4" },
-    { type: "mult", value: "*" },
-    { type: "number", value: "5" },
-    { type: "plus", value: "+" },
-    { type: "number", value: "1" },
-    { type: "semicolon", value: ";" },
-    { type: "key", value: "const" },
-    { type: "name", value: "c" },
-    { type: "eq", value: "=" },
-    { type: "name", value: "c" },
-    { type: "square", value: "^" },
-    { type: "number", value: "2" },
-    { type: "semicolon", value: ";" },
-  ]);
+    { type: "key", content: "var" },
+    { type: "name", content: "content" },
+    { type: "eq", content: "=" },
+    { type: "number", content: "4" },
+    { type: "mult", content: "*" },
+    { type: "number", content: "5" },
+    { type: "plus", content: "+" },
+    { type: "number", content: "1" },
+    { type: "semicolon", content: ";" },
+    { type: "key", content: "const" },
+    { type: "name", content: "c" },
+    { type: "eq", content: "=" },
+    { type: "name", content: "content" },
+    { type: "square", content: "^" },
+    { type: "number", content: "2" },
+    { type: "semicolon", content: ";" },
+  ] as Token[]);
 });
