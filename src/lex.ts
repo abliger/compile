@@ -132,6 +132,21 @@ function getNextToken(source: Source): Token | void {
         return { content: "[", type: "lbracket" };
       case "]":
         return { content: "]", type: "rbracket" };
+      case '"':
+        let strLiteral = "";
+        while (true) {
+          const nextChar = source.getCurrentByte();
+          if (nextChar === null) {
+            throw new Error("Unterminated string literal");
+          }
+          if (nextChar === '"') {
+            break;
+          }
+          strLiteral += nextChar;
+        }
+        return { content: strLiteral, type: "string" };
+      case "\\":
+        return { content: "\\", type: "backslash" };
       default:
         if (/[a-zA-Z_]/.test(char)) {
           let identifier = char;

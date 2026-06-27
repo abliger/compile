@@ -88,3 +88,33 @@ test("从字符串分词", () => {
     { type: "number", content: "2" },
   ] as Token[]);
 });
+
+test("更多测试", () => {
+  const tokens = lexString("/sdkfljk\n");
+  console.log(tokens);
+  expect(tokens).toEqual([
+    { type: "div", content: "/" },
+    { type: "name", content: "sdkfljk" },
+    { type: "semicolon", content: ";" },
+  ] as Token[]);
+});
+
+test("更多测试", () => {
+  const tokens = lexString("\/sdkfljk\n");
+  console.log(tokens);
+  expect(tokens).toEqual([
+    { type: "div", content: "/" },
+    { type: "name", content: "sdkfljk" },
+    { type: "semicolon", content: ";" },
+  ] as Token[]);
+});
+
+test("更多测试", () => {
+  const tokens = lexString("const a = 5");
+  expect(tokens).toEqual([
+    { type: "key", content: "const" },
+    { type: "name", content: "a" },
+    { type: "eq", content: "=" },
+    { type: "number", content: "5" },
+  ] as Token[]);
+});
