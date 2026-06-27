@@ -1,16 +1,16 @@
 import { expect, test } from "vitest";
-import { RList } from "./RList.ts";
-import { lex, lexString, Token } from "./lex.js";
+import { RList } from "./05_RList.ts";
+import { lex, lexString, Token } from "./07_lex.ts";
 import fs from "fs";
 
-const filePath = "./src/test.txt";
+const filePath = "./src/01_test.txt";
 
 test("测试读取文件", () => {
   const fd = fs.openSync(filePath, "r");
   const buf = Buffer.alloc(1);
   let bytesRead: number;
   while ((bytesRead = fs.readSync(fd, buf, 0, 1, null)) > 0) {
-    console.log(buf[0]); // 单个字节
+    expect(buf[0]).not.toBeNull();
   }
   fs.closeSync(fd);
 });
@@ -49,7 +49,7 @@ test("测试读取文件", () => {
 });
 
 test("测试语法分析器", () => {
-  const tokens = lex("src/test.txt");
+  const tokens = lex("src/01_test.txt");
   expect(tokens).toEqual([
     { type: "key", content: "var" },
     { type: "name", content: "content" },
@@ -91,7 +91,6 @@ test("从字符串分词", () => {
 
 test("更多测试", () => {
   const tokens = lexString("/sdkfljk\n");
-  console.log(tokens);
   expect(tokens).toEqual([
     { type: "div", content: "/" },
     { type: "name", content: "sdkfljk" },
@@ -101,7 +100,6 @@ test("更多测试", () => {
 
 test("更多测试", () => {
   const tokens = lexString("\/sdkfljk\n");
-  console.log(tokens);
   expect(tokens).toEqual([
     { type: "div", content: "/" },
     { type: "name", content: "sdkfljk" },

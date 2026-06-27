@@ -17,9 +17,9 @@
   lex 函数内部使用 getNextToken 函数来逐个获取标记，直到文件结束。
   getNextToken 函数根据当前字符的类型决定如何处理，并返回相应的标记。
 */
-import { Source } from "./source.ts";
-import { RList } from "./RList.ts";
-import { StringSource } from "./StringSource.ts";
+import { Source } from "./04_source.ts";
+import { RList } from "./05_RList.ts";
+import { StringSource } from "./06_StringSource.ts";
 
 export interface Token {
   content: string;

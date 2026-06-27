@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { parse } from "./grammar.ts";
-import { lex, lexString } from "./lex.ts";
+import { parse } from "./09_grammar.ts";
+import { lex, lexString } from "./07_lex.ts";
 
 test("grammar test", () => {
-  const tokens = lex("./src/test.txt");
+  const tokens = lex("./src/01_test.txt");
   parse(tokens!);
 });
 

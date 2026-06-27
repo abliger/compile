@@ -1,4 +1,4 @@
-import { Source } from "./source.ts";
+import { Source } from "./04_source.ts";
 
 // 基于字符串的输入源，用于直接从内存中的字符串读取字符。
 export class StringSource implements Source {
