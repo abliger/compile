@@ -1,0 +1,15 @@
+
+// 这是一个简单的 EBNF 语法定义，用于描述一个基本的编程语言的语法结构。以下是各个规则的解释：
+// program: 一个程序由零个或多个语句组成，最后以文件结束符 (EOF) 结束。
+// statement: 一个语句可以是赋值语句或表达式。
+// assignment: 赋值语句由一个标识符、等号和一个表达式组成。
+// expression: 表达式由一个项和零个或多个加法或减法操作符及其后的项组成。
+// term: 项由一个因子和零个或多个乘法或除法操作符及其后的因子组成。
+// factor: 因子可以是一个数字、一个标识符，或者是一个括号内的表达式。
+program := statement* EOF ;
+statement := assignment | expression | '//' COMMENT ;
+assignment :=  (keyword)+ IDENTIFIER '=' expression ;
+keyword := 'let' | 'var' | 'const' ;
+expression := term (('+' | '-') term)* ;
+term := factor (('*' | '/') factor)* ;
+factor := NUMBER | IDENTIFIER | '(' expression ')' ;

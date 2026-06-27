@@ -42,7 +42,9 @@ test("测试读取文件", () => {
     if (char === null) break;
     str += char;
   }
-  expect(str).toBe("var content=4*5+1\nconst c=content^2\n");
+  expect(str).toBe(
+    "var content=4*5+1\n// this is a zhushi\nconst c=content^2\n",
+  );
   rlist.close();
 });
 
