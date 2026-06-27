@@ -1,0 +1,17 @@
+
+// 右递归版本的 EBNF 语法定义
+// program: 一个程序由零个或多个语句组成，最后以文件结束符 (EOF) 结束。
+// statement: 一个语句可以是赋值语句、表达式或注释。
+// assignment: 赋值语句由零个或一个关键字、一个标识符、等号和一个表达式组成。
+// keyword: 关键字可以是 let、var 或 const。
+// expression: 表达式采用右递归，形式为 term 后可选地跟随 + 或 - 以及另一个 expression。
+// term: 项采用右递归，形式为 factor 后可选地跟随 * 或 / 以及另一个 term。
+// factor: 因子可以是一个数字、一个标识符，或者是一个括号内的表达式。
+program := statement* EOF ;
+statement := assignment | expression | '//' COMMENT ;
+assignment := (keyword)? NAME '=' expression ;
+keyword := 'let' | 'var' | 'const' ;
+expression := mut (('+' | '-') expression)? ;
+mut := term ('^' mut)?;
+term := factor (('*' | '/') term)? ;
+factor := NUMBER | NAME | '(' expression ')' ;
