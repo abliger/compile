@@ -1,6 +1,7 @@
 import { openSync, readSync, closeSync } from "fs";
+import { Source } from "./source.ts";
 
-export class RList {
+export class RList implements Source {
   #list: Buffer<ArrayBuffer> = Buffer.alloc(2 * 512); // 双缓冲，两半各 512 字节
   filePath: string;
   fd: number | null = null;

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { RList } from "./RList.ts";
-import { lex, Token } from "./lex.js";
+import { lex, lexString, Token } from "./lex.js";
 import fs from "fs";
 
 const filePath = "./src/test.txt";
@@ -67,5 +67,24 @@ test("测试语法分析器", () => {
     { type: "square", content: "^" },
     { type: "number", content: "2" },
     { type: "semicolon", content: ";" },
+  ] as Token[]);
+});
+
+test("从字符串分词", () => {
+  const tokens = lexString("let x = 10 + 20\nvar y = x * 2");
+  expect(tokens).toEqual([
+    { type: "key", content: "let" },
+    { type: "name", content: "x" },
+    { type: "eq", content: "=" },
+    { type: "number", content: "10" },
+    { type: "plus", content: "+" },
+    { type: "number", content: "20" },
+    { type: "semicolon", content: ";" },
+    { type: "key", content: "var" },
+    { type: "name", content: "y" },
+    { type: "eq", content: "=" },
+    { type: "name", content: "x" },
+    { type: "mult", content: "*" },
+    { type: "number", content: "2" },
   ] as Token[]);
 });
