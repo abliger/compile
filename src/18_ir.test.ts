@@ -106,3 +106,10 @@ test("测试运算", () => {
     "PUSH 1\nPUSH 2\nPUSH 4\nMUL\nADD\nPUSH 6\nADD\nPUSH 5\nPUSH 2\nMUL\nADD\nPOP\nHALT",
   );
 });
+
+test("测试运算", () => {
+  const ir = compile("1+2*(4 +6) +5*2;");
+  expect(printIR(ir)).toEqual(
+    "PUSH 1\nPUSH 2\nPUSH 4\nPUSH 6\nADD\nMUL\nADD\nPUSH 5\nPUSH 2\nMUL\nADD\nPOP\nHALT",
+  );
+});
