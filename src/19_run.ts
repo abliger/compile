@@ -32,7 +32,7 @@ export function run(irs: IRInstruction[]) {
     if (ir.op == "STORE") {
       map.set(ir.arg as string, list.pop() as number);
     }
-    if (ir.op == "STORE") {
+    if (ir.op == "LOAD") {
       list.push(map.get(ir.arg as string) as number);
     }
     if (ir.op == "POP") {

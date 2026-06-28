@@ -21,7 +21,12 @@ test("生成带优先级的二元表达式", () => {
   expect(number).toEqual(7);
 });
 
-test("幂运算保持右结合", () => {
+test("括号结合", () => {
   const number = result("1+2*2-3*(3+1);");
   expect(number).toEqual(-7);
+});
+
+test("变量使用", () => {
+  const number = result("const a =1+2*2;const b= 1-2;b+a+3*(3+1);");
+  expect(number).toEqual(16);
 });
