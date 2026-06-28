@@ -75,25 +75,19 @@ function parseExpression(tokens: any[]): void {
   ) {
     parseMut(tokens);
 
-    while (token.length > 0) {
-      if (
-        tokens.length > 0 &&
-        (tokens[0].content === "+" || tokens[0].content === "-")
-      ) {
-        tokens.shift(); // 移除 '+' 或 '-' token
-        parseMut(tokens);
-      }
+    while (
+      tokens.length > 0 &&
+      (tokens[0].content === "+" || tokens[0].content === "-")
+    ) {
+      tokens.shift(); // 移除 '+' 或 '-' token
+      parseMut(tokens);
     }
-  } else {
-    throw new Error(`Unexpected token in expression: ${token.content}`);
   }
-}
 
-function parseMut(tokens: any[]): void {
-  // mut := term ('^' mut)?;
-  parseTerm(tokens);
-  while (tokens.length > 0) {
-    if (tokens.length > 0 && tokens[0].content === "^") {
+  function parseMut(tokens: any[]): void {
+    // mut := term ('^' mut)?;
+    parseTerm(tokens);
+    while (tokens.length > 0 && tokens[0].content === "^") {
       tokens.shift(); // 移除 '^' token
       parseMut(tokens);
     }
@@ -110,17 +104,13 @@ function parseTerm(tokens: any[]): void {
   ) {
     parseFactor(tokens);
 
-    while (tokens.length > 0) {
-      if (
-        tokens.length > 0 &&
-        (tokens[0].content === "*" || tokens[0].content === "/")
-      ) {
-        tokens.shift(); // 移除 '*' 或 '/' token
-        parseFactor(tokens);
-      }
+    while (
+      tokens.length > 0 &&
+      (tokens[0].content === "*" || tokens[0].content === "/")
+    ) {
+      tokens.shift(); // 移除 '*' 或 '/' token
+      parseFactor(tokens);
     }
-  } else {
-    throw new Error(`Unexpected token in term: ${token.content}`);
   }
 }
 
