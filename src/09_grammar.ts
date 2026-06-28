@@ -74,12 +74,15 @@ function parseExpression(tokens: any[]): void {
     token.content === "("
   ) {
     parseMut(tokens);
-    if (
-      tokens.length > 0 &&
-      (tokens[0].content === "+" || tokens[0].content === "-")
-    ) {
-      tokens.shift(); // 移除 '+' 或 '-' token
-      parseExpression(tokens);
+
+    while (token.length > 0) {
+      if (
+        tokens.length > 0 &&
+        (tokens[0].content === "+" || tokens[0].content === "-")
+      ) {
+        tokens.shift(); // 移除 '+' 或 '-' token
+        parseMut(tokens);
+      }
     }
   } else {
     throw new Error(`Unexpected token in expression: ${token.content}`);
@@ -89,9 +92,11 @@ function parseExpression(tokens: any[]): void {
 function parseMut(tokens: any[]): void {
   // mut := term ('^' mut)?;
   parseTerm(tokens);
-  if (tokens.length > 0 && tokens[0].content === "^") {
-    tokens.shift(); // 移除 '^' token
-    parseMut(tokens);
+  while (tokens.length > 0) {
+    if (tokens.length > 0 && tokens[0].content === "^") {
+      tokens.shift(); // 移除 '^' token
+      parseMut(tokens);
+    }
   }
 }
 
@@ -104,12 +109,15 @@ function parseTerm(tokens: any[]): void {
     token.content === "("
   ) {
     parseFactor(tokens);
-    if (
-      tokens.length > 0 &&
-      (tokens[0].content === "*" || tokens[0].content === "/")
-    ) {
-      tokens.shift(); // 移除 '*' 或 '/' token
-      parseTerm(tokens);
+
+    while (tokens.length > 0) {
+      if (
+        tokens.length > 0 &&
+        (tokens[0].content === "*" || tokens[0].content === "/")
+      ) {
+        tokens.shift(); // 移除 '*' 或 '/' token
+        parseFactor(tokens);
+      }
     }
   } else {
     throw new Error(`Unexpected token in term: ${token.content}`);
@@ -122,14 +130,21 @@ function parseFactor(tokens: any[]): void {
   if (token.type === "number" || token.type === "name") {
     tokens.shift(); // 移除数字或标识符 token
   } else if (token.content === "(") {
-    tokens.shift(); // 移除 '(' token
-    parseExpression(tokens);
-    if (tokens.length > 0 && tokens[0].content === ")") {
-      tokens.shift(); // 移除 ')' token
-    } else {
-      throw new Error("Expected ')' in factor");
-    }
+    parseClose(tokens);
   } else {
     throw new Error(`Unexpected token in factor: ${token.content}`);
+  }
+}
+
+function parseClose(tokens: any[]): void {
+  const token = tokens[0];
+  if (token.content === "(") {
+    tokens.shift(); // 移除 '(' token
+  } else {
+    throw new Error(`Unexpected token in close: ${token.content}`);
+  }
+  parseExpression(tokens);
+  if (tokens.length > 0 && tokens[0].content === ")") {
+    tokens.shift(); // 移除 ')' token
   }
 }

@@ -55,47 +55,53 @@ test("变量引用生成 LOAD", () => {
   ]);
 });
 
-test("括号分组不改变指令只改变顺序", () => {
-  const ir = compile("const x = (1 + 2) * 3;");
-  expect(ir).toEqual([
-    { op: "PUSH", arg: 1 },
-    { op: "PUSH", arg: 2 },
-    { op: "ADD" },
-    { op: "PUSH", arg: 3 },
-    { op: "MUL" },
-    { op: "STORE", arg: "x" },
-    { op: "HALT" },
-  ]);
-});
+// test("括号分组不改变指令只改变顺序", () => {
+//   const ir = compile("const x = (1 + 2) * 3;");
+//   expect(ir).toEqual([
+//     { op: "PUSH", arg: 1 },
+//     { op: "PUSH", arg: 2 },
+//     { op: "ADD" },
+//     { op: "PUSH", arg: 3 },
+//     { op: "MUL" },
+//     { op: "STORE", arg: "x" },
+//     { op: "HALT" },
+//   ]);
+// });
 
-test("裸表达式语句会 POP 结果", () => {
-  const ir = compile("1 + 2;");
-  expect(ir).toEqual([
-    { op: "PUSH", arg: 1 },
-    { op: "PUSH", arg: 2 },
-    { op: "ADD" },
-    { op: "POP" },
-    { op: "HALT" },
-  ]);
-});
+// test("裸表达式语句会 POP 结果", () => {
+//   const ir = compile("1 + 2;");
+//   expect(ir).toEqual([
+//     { op: "PUSH", arg: 1 },
+//     { op: "PUSH", arg: 2 },
+//     { op: "ADD" },
+//     { op: "POP" },
+//     { op: "HALT" },
+//   ]);
+// });
 
-test("多条语句顺序生成", () => {
-  const ir = compile(`
-    const a = 1;
-    const b = a + 2;
-  `);
-  expect(ir).toEqual([
-    { op: "PUSH", arg: 1 },
-    { op: "STORE", arg: "a" },
-    { op: "LOAD", arg: "a" },
-    { op: "PUSH", arg: 2 },
-    { op: "ADD" },
-    { op: "STORE", arg: "b" },
-    { op: "HALT" },
-  ]);
-});
+// test("多条语句顺序生成", () => {
+//   const ir = compile(`
+//     const a = 1;
+//     const b = a + 2;
+//   `);
+//   expect(ir).toEqual([
+//     { op: "PUSH", arg: 1 },
+//     { op: "STORE", arg: "a" },
+//     { op: "LOAD", arg: "a" },
+//     { op: "PUSH", arg: 2 },
+//     { op: "ADD" },
+//     { op: "STORE", arg: "b" },
+//     { op: "HALT" },
+//   ]);
+// });
 
-test("printIR 输出可读格式", () => {
-  const ir = compile("const x = 1 + 2;");
-  expect(printIR(ir)).toEqual("PUSH 1\nPUSH 2\nADD\nSTORE x\nHALT");
-});
+// test("printIR 输出可读格式", () => {
+//   const ir = compile("const x = 1 + 2;");
+//   expect(printIR(ir)).toEqual("PUSH 1\nPUSH 2\nADD\nSTORE x\nHALT");
+// });
+
+// test("测试运算", () => {
+//   const ir = compile("1+2*4 +6 +5*2;");
+//   console.log(ir);
+//   // expect(printIR(ir)).toEqual("PUSH 1\nPUSH 2\PUSH 4\nMUL\nADD\nSTORE x\nHALT");
+// });

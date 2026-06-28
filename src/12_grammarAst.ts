@@ -103,40 +103,39 @@ function parseAssignment(tokens: Token[]): AssignmentNode {
 
 function parseExpression(tokens: Token[]): ExpressionNode {
   // expression := mut (('+' | '-') expression)? ;
-  const left = parseMut(tokens);
-  if (
+  let left = parseMut(tokens);
+  while (
     tokens.length > 0 &&
     (tokens[0].content === "+" || tokens[0].content === "-")
   ) {
     const op = tokens.shift()!; // 移除 '+' 或 '-' token
-    const right = parseExpression(tokens);
-    return new BinaryExprNode(op.content, left, right, 0, 0);
+    const right = parseMut(tokens);
+    left = new BinaryExprNode(op.content, left, right, 0, 0);
   }
   return left;
 }
 
 function parseMut(tokens: Token[]): ExpressionNode {
   // mut := term ('^' mut)?;  右结合
-  const left = parseTerm(tokens);
-  if (tokens.length > 0 && tokens[0].content === "^") {
+  let left = parseTerm(tokens);
+  while (tokens.length > 0 && tokens[0].content === "^") {
     const op = tokens.shift()!; // 移除 '^' token
     const right = parseMut(tokens);
-    return new BinaryExprNode(op.content, left, right, 0, 0);
+    left = new BinaryExprNode(op.content, left, right, 0, 0);
   }
   return left;
 }
 
 function parseTerm(tokens: Token[]): ExpressionNode {
   // term := factor (('*' | '/') term)? ;
-  const left = parseFactor(tokens);
-
-  if (
+  let left = parseFactor(tokens);
+  while (
     tokens.length > 0 &&
     (tokens[0].content === "*" || tokens[0].content === "/")
   ) {
     const op = tokens.shift()!; // 移除 '*' 或 '/' token
-    const right = parseTerm(tokens);
-    return new BinaryExprNode(op.content, left, right, 0, 0);
+    const right = parseFactor(tokens);
+    left = new BinaryExprNode(op.content, left, right, 0, 0);
   }
   return left;
 }

@@ -113,39 +113,39 @@ function parseAssignment(tokens: Token[]): AssignmentNode {
 
 function parseExpression(tokens: Token[]): ExpressionNode {
   // expression := mut (('+' | '-') expression)? ;
-  const left = parseMut(tokens);
-  if (
+  let left = parseMut(tokens);
+  while (
     tokens.length > 0 &&
     (tokens[0].content === "+" || tokens[0].content === "-")
   ) {
     const op = tokens.shift()!;
-    const right = parseExpression(tokens);
-    return new BinaryExprNode(op.content, left, right, left.line, left.column);
+    const right = parseMut(tokens);
+    left = new BinaryExprNode(op.content, left, right, left.line, left.column);
   }
   return left;
 }
 
 function parseMut(tokens: Token[]): ExpressionNode {
   // mut := term ('^' mut)?;  右结合
-  const left = parseTerm(tokens);
-  if (tokens.length > 0 && tokens[0].content === "^") {
+  let left = parseTerm(tokens);
+  while (tokens.length > 0 && tokens[0].content === "^") {
     const op = tokens.shift()!;
     const right = parseMut(tokens);
-    return new BinaryExprNode(op.content, left, right, left.line, left.column);
+    left = new BinaryExprNode(op.content, left, right, left.line, left.column);
   }
   return left;
 }
 
 function parseTerm(tokens: Token[]): ExpressionNode {
   // term := factor (('*' | '/') term)? ;
-  const left = parseFactor(tokens);
-  if (
+  let left = parseFactor(tokens);
+  while (
     tokens.length > 0 &&
     (tokens[0].content === "*" || tokens[0].content === "/")
   ) {
     const op = tokens.shift()!;
-    const right = parseTerm(tokens);
-    return new BinaryExprNode(op.content, left, right, left.line, left.column);
+    const right = parseFactor(tokens);
+    left = new BinaryExprNode(op.content, left, right, left.line, left.column);
   }
   return left;
 }
@@ -159,7 +159,11 @@ function parseFactor(tokens: Token[]): ExpressionNode {
   const token = tokens[0];
   if (token.type === "number") {
     tokens.shift();
-    return new NumberLiteralNode(parseFloat(token.content), token.line, token.start);
+    return new NumberLiteralNode(
+      parseFloat(token.content),
+      token.line,
+      token.start,
+    );
   }
 
   if (token.type === "name") {
